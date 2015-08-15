@@ -7,18 +7,36 @@
   <script src='fullcalendar/fullcalendar.js'></script>
 
   <script>
-  $(document).ready(function() {
+    $(document).ready(function() {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1;
+      var yyyy = today.getFullYear();
+
 
     // page is now ready, initialize the calendar...
 
     $('#calendar').fullCalendar({
-     events: '/events.json'
-});
 
-});
+      header: {
+          center: 'month,agendaWeek,agendaDay' // buttons for switching between views
+        },
+        events: '/events.json',
+        eventRender: function(event, element) {
+          if(event.start_date > today ) {
+            element.css('background-color', '#378006');
+          } else {
+            element.css('background-color', '#00FFFF');
+          }
+        }
 
 
-  </script>
+    });
+
+  });
+
+
+</script>
 </head>
 <h1>Listing Events</h1>
 
@@ -35,15 +53,15 @@
 
   <tbody>
     <% @events.each do |event| %>
-      <tr>
-        <td><%= event.title %></td>
-        <td><%= event.description %></td>
-        <td><%= event.start_date %></td>
-        <td><%= event.end_date %></td>
-        <td><%= link_to 'Show', event %></td>
-        <td><%= link_to 'Edit', edit_event_path(event) %></td>
-        <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+    <tr>
+      <td><%= event.title %></td>
+      <td><%= event.description %></td>
+      <td><%= event.start_date %></td>
+      <td><%= event.end_date %></td>
+      <td><%= link_to 'Show', event %></td>
+      <td><%= link_to 'Edit', edit_event_path(event) %></td>
+      <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
     <% end %>
   </tbody>
 </table>
@@ -52,5 +70,9 @@
 <br>
 
 <div id='calendar' style="width: 400px"></div>
+
+<div id='calendarweek' style="width: 400px"></div>
+
+<div id='calendarday' style="width: 400px"></div>
 
 <%= link_to 'New Event', new_event_path %>
