@@ -23,7 +23,8 @@
         },
         events: '/events.json',
         eventRender: function(event, element) {
-          if(event.start_date > today ) {
+          console.log(event.start)
+          if(event.start >= today ) {
             element.css('background-color', '#378006');
           } else {
             element.css('background-color', '#00FFFF');
